@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Security-Policy" content="
+            default-src 'self' data: https:;
+            script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:;
+            style-src 'self' 'unsafe-inline' https: http:;
+            font-src 'self' https: http: data:;
+            img-src 'self' data: https: http:;
+            connect-src 'self' data: https: http:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+        
+        <!-- Google Fonts - Figtree -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+    </head>
+    <body>
+        <!-- PÁGINA PRINCIPAL - MAPA DE BARCELONA -->
+        <div data-role="page" id="home-page">
+            
+            <div data-role="panel" data-display="push" data-theme="b" id="nav-panel">
+                <ul data-role="listview">
+                    <li data-icon="delete"><a href="#" data-rel="close">Fechar menu</a></li>
+                    <li><a href="#home-page" data-rel="close">🗺️ Mapa Barcelona</a></li>
+                    <li><a href="#antiguidade-page" data-rel="close">📊 Grid Antiguidade</a></li>
+                    <li><a href="#malha1920-page" data-rel="close">🏛️ Malha Urbana 1920</a></li>
+                    <li><a href="#malha1980-page" data-rel="close">🏗️ Malha Urbana 1980</a></li>
+                    <li><a href="#formulario-page" data-rel="close">📝 Contribuir</a></li>
+                    <li><a href="#sobre-page" data-rel="close">ℹ️ Sobre o Projeto</a></li>
+                </ul>
+            </div>
+            
+            <div data-role="header" data-position="fixed">
+                <h1>Barcelona Antiga</h1>
+                <a href="#nav-panel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars"></a>
+                <!-- Botão de contribuir no lugar do botão de localizar -->
+                <a href="#formulario-page" class="ui-btn ui-btn-right ui-icon-plus ui-btn-icon-notext" id="btn-contribuir" title="Adicionar contribuição"></a>
+            </div>
+            
+            <div data-role="main" class="ui-content" style="padding: 0;">
+                <div id="mapa-principal" style="width: 100%; height: 100%;"></div>
+            </div>
+            
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#" id="btn-legenda" class="ui-btn-active">📋 Legenda</a></li>
+                        <li><a href="#" id="btn-filtro">🔍 Filtros</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- PÁGINA GRID ANTIGUIDADE -->
+        <div data-role="page" id="antiguidade-page">
+            <div data-role="header" data-position="fixed">
+                <h1>Distribuição por Idade</h1>
+                <a href="#home-page" class="ui-btn ui-btn-left ui-btn-b">Voltar</a>
+            </div>
+            
+            <div data-role="main" class="ui-content">
+                <h2>Distribuição Espacial da Antiguidade</h2>
+                
+                <div class="grid-container">
+                    <!-- Aqui será inserido o grid de distribuição -->
+                    <div class="grid-placeholder">
+                        <p>Gráfico de distribuição será carregado aqui</p>
+                        <p>📊 Dados: Antiguidade dos edifícios de Barcelona</p>
+                    </div>
+                </div>
+                
+                <!-- Legenda do grid -->
+                <div class="grid-legenda">
+                    <h3>Legenda</h3>
+                    <div class="legenda-item">
+                        <span class="cor-legenda" style="background: #8B4513;"></span>
+                        <span>Pré-1800 (Histórico)</span>
+                    </div>
+                    <div class="legenda-item">
+                        <span class="cor-legenda" style="background: #CD853F;"></span>
+                        <span>1800-1850</span>
+                    </div>
+                    <div class="legenda-item">
+                        <span class="cor-legenda" style="background: #DAA520;"></span>
+                        <span>1850-1900</span>
+                    </div>
+                    <div class="legenda-item">
+                        <span class="cor-legenda" style="background: #9ACD32;"></span>
+                        <span>1900-1950</span>
+                    </div>
+                    <div class="legenda-item">
+                        <span class="cor-legenda" style="background: #4682B4;"></span>
+                        <span>1950-2000</span>
+                    </div>
+                    <div class="legenda-item">
+                        <span class="cor-legenda" style="background: #708090;"></span>
+                        <span>Pós-2000</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div data-role="footer" data-position="fixed">
+                <h4>Dados: Cadastro Municipal de Barcelona</h4>
+            </div>
+        </div>
+
+        <!-- PÁGINA MALHA URBANA 1920 -->
+        <div data-role="page" id="malha1920-page">
+            <div data-role="header" data-position="fixed">
+                <h1>Barcelona 1920</h1>
+                <a href="#home-page" class="ui-btn ui-btn-left ui-btn-b">Voltar</a>
+            </div>
+            
+            <div data-role="main" class="ui-content" style="padding: 0;">
+                <div id="mapa-1920" style="width: 100%; height: 100%;"></div>
+            </div>
+            
+            <div data-role="footer" data-position="fixed">
+                <h4>Malha Urbana • 1920</h4>
+            </div>
+        </div>
+
+        <!-- PÁGINA MALHA URBANA 1980 -->
+        <div data-role="page" id="malha1980-page">
+            <div data-role="header" data-position="fixed">
+                <h1>Barcelona 1980</h1>
+                <a href="#home-page" class="ui-btn ui-btn-left ui-btn-b">Voltar</a>
+            </div>
+            
+            <div data-role="main" class="ui-content" style="padding: 0;">
+                <div id="mapa-1980" style="width: 100%; height: 100%;"></div>
+            </div>
+            
+            <div data-role="footer" data-position="fixed">
+                <h4>Malha Urbana • 1980</h4>
+            </div>
+        </div>
+
+        <!-- PÁGINA FORMULÁRIO DE CONTRIBUIÇÃO SIMPLIFICADO -->
+        <div data-role="page" id="formulario-page">
+            <div data-role="header" data-position="fixed">
+                <h1>Contribuir</h1>
+                <a href="#home-page" class="ui-btn ui-btn-left ui-btn-b">Voltar</a>
+            </div>
+            
+            <div data-role="main" class="ui-content">
+                <div class="formulario-marcador">
+                    <h2>Adicionar Contribuição</h2>
+                    
+                    <div class="campo-form">
+                        <label for="comentarios">COMENTÁRIOS SOBRE O EDIFÍCIO:</label>
+                        <textarea name="comentarios" id="comentarios" placeholder="Ex: Edifício muito bem preservado, detalhes arquitetônicos interessantes..." rows="3"></textarea>
+                    </div>
+                    
+                    <div class="campo-form">
+                        <label>SUA LOCALIZAÇÃO ATUAL:</label>
+                        <div class="coordenadas-grid">
+                            <input type="number" step="any" name="latitud" id="latitud" placeholder="Latitude" readonly>
+                            <input type="number" step="any" name="longitud" id="longitud" placeholder="Longitude" readonly>
+                        </div>
+                        <button class="botao-acao" id="btn-atualizar-posicao" style="width:100%; margin-top:8px;">
+                            <span>📍</span> ATUALIZAR POSIÇÃO
+                        </button>
+                    </div>
+                    
+                    <div class="campo-form">
+                        <label>AVALIAÇÃO:</label>
+                        <div class="avaliacao-estrelas">
+                            <span class="estrela" data-valor="1">★</span>
+                            <span class="estrela" data-valor="2">★</span>
+                            <span class="estrela" data-valor="3">★</span>
+                            <span class="estrela" data-valor="4">★</span>
+                            <span class="estrela" data-valor="5">★</span>
+                        </div>
+                        <input type="hidden" id="nota" value="0">
+                    </div>
+                    
+                    <div class="botoes-acao">
+                        <button class="botao-acao" id="btn-adicionar-foto">
+                            <span>📷</span> ADICIONAR FOTO
+                        </button>
+                    </div>
+                    
+                    <div class="info-foto" id="info-foto" style="display: none;">
+                        <p>📸 Foto selecionada com sucesso!</p>
+                    </div>
+                    
+                    <button class="botao-criar-marcador" id="btn-salvar-contribuicao">
+                        SALVAR CONTRIBUIÇÃO
+                    </button>
+                    
+                    <div class="abas">
+                        <button class="aba ativa" id="aba-mapa">MAPA</button>
+                        <button class="aba" id="aba-lista">MINHAS CONTRIBUIÇÕES</button>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div data-role="footer" data-position="fixed">
+                <h4>Contribua com o Patrimônio de Barcelona</h4>
+            </div>
+        </div>
+
+        <!-- PÁGINA SOBRE -->
+        <div data-role="page" id="sobre-page">
+            <div data-role="header" data-position="fixed">
+                <h1>Sobre o Projeto</h1>
+                <a href="#home-page" class="ui-btn ui-btn-left ui-btn-b">Voltar</a>
+            </div>
+            
+            <div data-role="main" class="ui-content">
+                <div class="sobre-container">
+                    <h2>Barcelona Antiga</h2>
+                    <p>Projeto de Mapeamento do Patrimônio Arquitetônico de Barcelona</p>
+                    
+                    <div class="sobre-card">
+                        <h3>📋 Objetivo</h3>
+                        <p>Mapear e catalogar edifícios de Barcelona de acordo com sua antiguidade, criando um banco de dados colaborativo do patrimônio histórico da cidade.</p>
+                    </div>
+                    
+                    <div class="sobre-card">
+                        <h3>🗺️ Funcionalidades</h3>
+                        <ul>
+                            <li>Mapa interativo com camada de antiguidade</li>
+                            <li>Visualização da evolução urbana (1920-1980)</li>
+                            <li>Grid de distribuição espacial</li>
+                            <li>Contribuição colaborativa com fotos e avaliações</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sobre-card">
+                        <h3>🎓 Mestrado</h3>
+                        <p>Projeto Final de Mestrado</p>
+                        <p>Dados: Cadastro Municipal de Barcelona / Colaborativo</p>
+                    </div>
+                    
+                    <div class="sobre-card">
+                        <h3>📊 Versão</h3>
+                        <p>Beta 1.0 - Em desenvolvimento</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div data-role="footer" data-position="fixed">
+                <h4>© 2024 - Barcelona Antiga</h4>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        
+        <script type="text/javascript">
+            $(document).ready(function() {
+                if (typeof onDocumentReady === 'function') {
+                    onDocumentReady();
+                }
+            });
+            
+            if (typeof app !== 'undefined' && app.initialize) {
+                app.initialize();
+            }
+        </script>
+    </body>
+</html>
